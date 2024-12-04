@@ -1,0 +1,79 @@
+1. Library System
+a. Create the `Books` table:
+CREATE TABLE Books (
+    BookID INT PRIMARY KEY,
+    Title VARCHAR(100),
+    Author VARCHAR(50),
+    PublishedYear INT
+);
+b. Add a new column `ISBN`:
+ALTER TABLE Books
+ADD ISBN VARCHAR(13);
+c. Delete the `PublishedYear` column:
+ALTER TABLE Books
+DROP COLUMN PublishedYear;
+
+2. School Database
+a. Retrieve names of students older than 15:
+SELECT Name
+FROM Students
+WHERE Age > 15;
+b. Insert a new record:
+INSERT INTO Students (StudentID, Name, Age, Grade)
+VALUES (104, 'Tom Brown', 15, 'C');
+c. Update Jane Doe's grade:
+UPDATE Students
+SET Grade = 'A+'
+WHERE Name = 'Jane Doe';
+d. Delete records of students with grade 'C':
+DELETE FROM Students
+WHERE Grade = 'C';
+
+3. Permissions for `User2`
+a. Grant `SELECT` and `INSERT` privileges:
+GRANT SELECT, INSERT ON Books TO User2;
+b. Revoke the `INSERT` privilege:
+REVOKE INSERT ON Books FROM User2;
+
+4. Transactions for Shopping Cart
+BEGIN TRANSACTION;
+
+-- a. Start the transaction
+INSERT INTO Orders (OrderID, ProductID, Quantity)
+VALUES (201, 105, 2);
+
+-- b. Deduct quantity from inventory
+UPDATE Inventory
+SET Quantity = Quantity - 2
+WHERE ProductID = 105;
+
+-- c. Commit or rollback
+IF @@ERROR <> 0
+BEGIN
+    ROLLBACK TRANSACTION;
+END
+ELSE
+BEGIN
+    COMMIT TRANSACTION;
+END
+
+5. Online Store Operations
+a. Create `Customers` table:
+CREATE TABLE Customers (
+    CustomerID INT PRIMARY KEY,
+    Name VARCHAR(50),
+    Email VARCHAR(50),
+    Phone VARCHAR(15)
+);
+b. Insert a customer record:
+INSERT INTO Customers (CustomerID, Name, Email, Phone)
+VALUES (201, 'Emily Clark', 'emily@example.com', '1234567890');
+c. Grant `SELECT` privilege to `AdminUser`:
+GRANT SELECT ON Customers TO AdminUser;
+d. Roll back the last inserted record:
+BEGIN TRANSACTION;
+
+DELETE FROM Customers
+WHERE CustomerID = 201;
+
+ROLLBACK TRANSACTION;
